@@ -1,0 +1,10 @@
+@tailwind base;
+img {
+  @apply inline-block;
+}
+
+@tailwind components;
+
+@tailwind utilities;
+
+@import "./custom-utils.css";
