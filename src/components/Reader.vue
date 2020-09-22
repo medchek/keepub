@@ -139,9 +139,6 @@ export default {
           );
         });
     },
-    // todo: [DONE] before revoking all blobs check if the assets of the next page are already loaded and prevent them from being reprocessed
-    // todo: REMOVE ALL POSSIBLE CSS CONFLICTS, MOST NOTABLIY WHEN DEALING WITH BODY STYLING.
-    // todo: ALSO, POSSIBLY REMOVE ANY FONT-SIZING IN ORDER TO ALLOW FOR CONROLLABLE FONT SIZE INCREASE/DECREASE
     htmlRegexParse(htmlString) {
       // this will contain all the assets required for the current page to render, in an organized fashion
       const requiredAssets = {
