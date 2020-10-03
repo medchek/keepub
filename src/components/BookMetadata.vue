@@ -1,7 +1,10 @@
 <template>
-  <div class="tw-text-center tw-w-auto tw-h-full tw-flex tw-flex-col tw-justify-center tw-pb-40">
-    <div id="book-title" class="tw-text-5xl tw-italic">{{title}}</div>
-    <div id="book-author" class="tw-text-2xl tw-italic">by {{author}}</div>
+  <div
+    class="tw-text-center tw-w-auto tw-h-full tw-flex tw-flex-col tw-justify-center tw-pb-40"
+    :class="theme.text"
+  >
+    <div id="book-title" class="tw-text-5xl tw-italic">{{ title }}</div>
+    <div id="book-author" class="tw-text-2xl tw-italic">by {{ author }}</div>
   </div>
 </template>
 
@@ -9,7 +12,7 @@
 import { mapGetters } from "vuex";
 export default {
   computed: {
-    ...mapGetters({ opf: "getOpf" }),
+    ...mapGetters({ opf: "getOpf", theme: "getTheme" }),
     author() {
       const author = this.opf.package.metadata["dc:creator"];
       // if it's just a plain string, return it directly

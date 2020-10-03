@@ -1,7 +1,11 @@
 <template>
   <div
-    class="tw-w-full tw-h-auto tw-text-center sm:tw-text-5xl tw-text-4xl tw-text tw-font-bold tw-bg-white tw-text-gray-800 tw-flex tw-items-center tw-px-3 tw-shadow-xs"
-    :class="opf === null ? 'tw-justify-center': 'tw-justify-between'"
+    class="tw-w-full tw-h-auto tw-text-center sm:tw-text-5xl tw-text-4xl tw-text tw-font-bold tw-flex tw-items-center tw-px-3 tw-shadow-xs"
+    :class="[
+      opf === null ? 'tw-justify-center' : 'tw-justify-between',
+      theme.headerBg,
+      theme.headerText,
+    ]"
   >
     <!-- OPEN MENU ICON -->
     <Menu
@@ -18,10 +22,17 @@
       for="select-epub"
       class="tw-cursor-pointer hover:tw-opacity-75 tw-mx-auto"
       title="Open a new epub"
-    >Reader</label>
+      >Reader</label
+    >
     <span v-else>Reader</span>
     <!-- SETTINGS ICON -->
-    <CogOutline v-if="opf" :size="30" class="tw-absolute tw-right-0 tw-mr-3" />
+    <CogOutline
+      v-if="opf"
+      :size="30"
+      class="tw-cursor-pointer tw-absolute tw-right-0 tw-mr-3 hover:tw-text-gray-600"
+      title="Open settings"
+      @click="openSettings"
+    />
   </div>
 </template>
 
@@ -31,7 +42,7 @@ import Menu from "icons/Menu";
 import CogOutline from "icons/CogOutline";
 export default {
   computed: {
-    ...mapGetters({ opf: "getOpf" }),
+    ...mapGetters({ opf: "getOpf", theme: "getTheme" }),
   },
   components: {
     Menu,
@@ -40,6 +51,7 @@ export default {
   methods: {
     ...mapMutations({
       openSideNav: "OPEN_TOC_SIDE_NAV",
+      openSettings: "OPEN_SETTINGS",
     }),
   },
   props: {

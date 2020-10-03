@@ -5,6 +5,7 @@ import Vuex from "vuex";
 import epub from "./modules/epub";
 import navigation from "./modules/navigation";
 import definitions from "./modules/definitions";
+import settings from "./modules/settings";
 Vue.use(Vuex);
 
 export default new Vuex.Store({
@@ -12,5 +13,6 @@ export default new Vuex.Store({
     epub,
     navigation,
     definitions,
+    settings,
   },
 });

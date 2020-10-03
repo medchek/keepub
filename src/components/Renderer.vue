@@ -2,6 +2,7 @@
   <div
     id="renderer"
     class="tw-w-auto tw-h-full tw-flex tw-flex-col tw-flex-grow tw-pt-5 tw-px-12 tw-pb-10 tw-overflow-y-auto tw-text-xl lg:tw-text-2xl"
+    :class="theme.text"
     ref="renderer"
     @dblclick="getSelectedWord"
     v-html="src"
@@ -26,7 +27,7 @@ export default {
     },
   },
   computed: {
-    ...mapGetters({ opf: "getOpf" }),
+    ...mapGetters({ opf: "getOpf", theme: "getTheme" }),
   },
   methods: {
     ...mapMutations({

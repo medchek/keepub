@@ -7,7 +7,6 @@ export default {
       message: null,
       timeout: 4000,
     },
-    theme: {},
     tocSideNav: {
       show: false, // dev false
     },

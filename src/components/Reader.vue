@@ -6,13 +6,14 @@
     <Loader v-if="!isLoaded" :size="4" />
     <div
       v-else
-      class="tw-h-full tw-w-11/12 tw-flex tw-flex-row tw-justify-between tw-overflow-hidden tw-shadow-lg tw-border-gray-100 tw-border moved"
+      class="tw-h-full tw-w-11/12 tw-flex tw-flex-row tw-justify-between tw-overflow-hidden tw-shadow-lg tw-border moved"
+      :class="[theme.readerBorder, theme.readerBg]"
     >
       <!-- PREVIOUS BUTTOn -->
       <button
-        class="tw-flex tw-justify-center tw-items-center tw-text-gray-600 tw-bg-gray-200 tw-bg-opacity-50 hover:tw-bg-opacity-75 tw-w-6 tw-px-4 tw-h-full tw-self-center"
+        class="tw-flex tw-justify-center tw-items-center tw-bg-gray-200 tw-bg-opacity-50 hover:tw-bg-opacity-75 tw-w-6 tw-px-4 tw-h-full tw-self-center"
         :disabled="currentFileIndex === -1"
-        :class="{disabled: currentFileIndex === -1}"
+        :class="[{ disabled: currentFileIndex === -1 }, theme.readerArrows]"
         @click="read(-1)"
         title="previous page"
       >
@@ -25,8 +26,13 @@
       <!-- NEXT BUTTON -->
       <button
         :disabled="currentFileIndex === opf.package.spine.itemref.length - 1"
-        :class="{disabled: currentFileIndex === opf.package.spine.itemref.length - 1}"
-        class="tw-flex tw-justify-center tw-items-center tw-text-gray-600 tw-bg-gray-200 tw-bg-opacity-50 hover:tw-bg-opacity-75 tw-w-6 tw-px-4 tw-h-full tw-self-center"
+        :class="[
+          {
+            disabled: currentFileIndex === opf.package.spine.itemref.length - 1,
+          },
+          theme.readerArrows,
+        ]"
+        class="tw-flex tw-justify-center tw-items-center tw-bg-gray-200 tw-bg-opacity-50 hover:tw-bg-opacity-75 tw-w-6 tw-px-4 tw-h-full tw-self-center"
         @click="read(1)"
         title="next page"
       >
@@ -37,6 +43,7 @@
     <DefinitionPanel />
 
     <TableOfContents v-show="sideNav.show" />
+    <Settings v-show="isShowSettings" />
   </div>
 </template>
 
@@ -52,6 +59,7 @@ import BookMetadata from "./BookMetadata";
 import Renderer from "./Renderer";
 import Loader from "./Loader";
 import DefinitionPanel from "./DefinitionPanel";
+import Settings from "./Settings";
 // vuex
 import { mapGetters, mapMutations } from "vuex";
 export default {
@@ -74,7 +82,9 @@ export default {
       ncx: "getNcx",
       epub: "getEpub",
       assets: "getAssets",
-      currentFileIndex: "getCurrentFileIndex", // current file index following the opf spine, where -1 will display the Metadata component
+      currentFileIndex: "getCurrentFileIndex", // current file index following the opf spine, where -1 will display the Metadata component,
+      isShowSettings: "getIsShowSettings",
+      theme: "getTheme",
     }),
   },
 
@@ -442,6 +452,7 @@ export default {
     Renderer,
     Loader,
     DefinitionPanel,
+    Settings,
   },
   // TODO (maybe) : should be handled in a prior stage, when assets file path is searched
   // handle asset file objects loading on component creation
@@ -492,7 +503,7 @@ button:focus {
   outline: none;
 }
 .moved {
-  transition: all 2s ease-in-out;
+  transition: all 0.8s ease-in-out;
 }
 .disabled {
   opacity: 0.3;

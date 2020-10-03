@@ -3,7 +3,11 @@
     <div
       class="tw-h-full tw-w-8/12 sm:tw-w-5/12 md:tw-w-2/6 lg:tw-w-2/6 xl:tw-w-1/5 tw-bg-gray-900 tw-fixed tw-top-0 tw-left-0 tw-flex tw-flex-col tw-items-center side-nav-shadow shado tw-text-gray-100"
       ref="toc"
-      v-click-outside="(e) => { if(sideNav.show) closeToc(e);  }"
+      v-click-outside="
+        (e) => {
+          if (sideNav.show) closeToc(e);
+        }
+      "
     >
       <!-- TOC HEADER -->
       <div
@@ -20,7 +24,9 @@
           @click="closeSideNav"
         />
       </div>
-      <div class="tw-w-full tw-h-full tw-overflow-y-auto">
+      <div
+        class="tw-w-full tw-h-full tw-overflow-y-auto tw-border-r tw-border-gray-800"
+      >
         <!-- TOC ITEMS -->
         <TocItems :nav-point="toc.ncx.navMap.navPoint" />
       </div>

@@ -1,5 +1,9 @@
 <template>
-  <div id="app" class="tw-flex tw-h-screen tw-flex-col">
+  <div
+    id="app"
+    class="tw-flex tw-h-screen tw-flex-col"
+    :class="theme.primaryBg"
+  >
     <Header />
     <SelectFile />
     <component :is="component" />
@@ -18,6 +22,7 @@ export default {
   computed: {
     ...mapGetters({
       component: "getComponent",
+      theme: "getTheme",
     }),
   },
   components: {
