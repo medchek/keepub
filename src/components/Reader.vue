@@ -317,7 +317,7 @@ export default {
     removeConflictingCss(cssText) {
       const rules = [
         /(body|svg)[^\n\r\t]*[ \n\r\t]*{[ \w"',%()/:;.\n\r\t-]*}/gim,
-        /font-size:[a-zA-Z0-9. %-]+;/gim,
+        /(font-size|color)\s?:[a-zA-Z0-9.%#(), -]+;?/gim,
       ];
       for (let i = 0; i < rules.length; i++) {
         const rule = rules[i];
