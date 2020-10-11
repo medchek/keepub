@@ -1,7 +1,7 @@
 <template>
   <div
     id="app"
-    class="tw-flex tw-h-screen tw-flex-col"
+    class="tw-flex tw-h-screen tw-flex-col tw-transition-all tw-duration-300"
     :class="theme.primaryBg"
   >
     <Header />

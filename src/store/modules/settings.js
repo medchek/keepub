@@ -14,10 +14,12 @@ export default {
   state: {
     show: false,
     theme: defaultTheme,
+    textSize: 3,
   },
   getters: {
     getTheme: (state) => state.theme,
     getIsShowSettings: (state) => state.show,
+    getTextSize: (state) => state.textSize,
   },
   mutations: {
     SET_DARK_THEME(state) {
@@ -45,6 +47,9 @@ export default {
     CLOSE_SETTINGS(state) {
       if (state.show === false) return;
       state.show = false;
+    },
+    SET_TEXT_SIZE(state, newTextSize) {
+      state.textSize = newTextSize;
     },
   },
 };

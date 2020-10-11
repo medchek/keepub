@@ -418,9 +418,6 @@ export default {
       const filePathRegex = new RegExp(`${escapedPathForRegex}$`, "i");
       return filePathRegex;
     },
-    log(msg) {
-      console.log(`[Reader.vue] -> ${msg}`);
-    },
   },
   watch: {
     // watch for state chage, and render the corresponding epub page.
@@ -503,7 +500,7 @@ button:focus {
   outline: none;
 }
 .moved {
-  transition: all 0.8s ease-in-out;
+  transition: all 0.4s ease-in-out;
 }
 .disabled {
   opacity: 0.3;

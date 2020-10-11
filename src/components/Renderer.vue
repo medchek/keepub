@@ -1,8 +1,8 @@
 <template>
   <div
     id="renderer"
-    class="tw-w-auto tw-h-full tw-flex tw-flex-col tw-flex-grow tw-pt-5 tw-px-12 tw-pb-10 tw-overflow-y-auto tw-text-xl lg:tw-text-2xl"
-    :class="[theme.text, theme.name]"
+    class="tw-w-auto tw-h-full tw-flex tw-flex-col tw-flex-grow tw-pt-5 tw-px-12 tw-pb-10 tw-overflow-y-auto"
+    :class="[theme.text, theme.name, textSizeClass.default, textSizeClass.lg]"
     ref="renderer"
     v-html="src"
   ></div>
@@ -16,6 +16,7 @@ export default {
     return {
       previousScrollPosition: 0,
       nextScrollPosition: 0,
+      allowScrollTop: false,
     };
   },
   props: {
@@ -26,7 +27,48 @@ export default {
     },
   },
   computed: {
-    ...mapGetters({ opf: "getOpf", theme: "getTheme" }),
+    ...mapGetters({
+      opf: "getOpf",
+      theme: "getTheme",
+      textSize: "getTextSize",
+      currentFileIndex: "getCurrentFileIndex",
+    }),
+    textSizeClass() {
+      let textClass = "tw-text-";
+      let lgTextClass = "lg:tw-text-";
+      switch (this.textSize) {
+        case 1:
+          textClass += "sm";
+          lgTextClass += "base";
+          break;
+        case 2:
+          textClass += "base";
+          lgTextClass += "xl";
+          break;
+        case 3:
+          textClass += "xl";
+          lgTextClass += "2xl";
+          break;
+        case 4:
+          textClass += "2xl";
+          lgTextClass += "3xl";
+          break;
+        case 5:
+          textClass += "3xl";
+          lgTextClass += "4xl";
+
+          break;
+        default:
+          textClass += "xl";
+          lgTextClass += "2xl";
+
+          break;
+      }
+      return {
+        default: textClass,
+        lg: lgTextClass,
+      };
+    },
   },
   methods: {
     ...mapMutations({
@@ -37,12 +79,19 @@ export default {
   },
   mixins: [navigationMixins],
   updated() {
+    console.log("Renderer updated!");
     const rendererEl = this.$refs.renderer;
     // reset scroll position
-    rendererEl.scrollTop = 0;
+
+    // only scroll back to top if the there's a change of file content
+    if (this.allowScrollTop) {
+      rendererEl.scrollTop = 0;
+      // set if back to false (default) until future file index change (see watcher)
+      this.allowScrollTop = false;
+    }
     const links = rendererEl.querySelectorAll("a[href]");
     // adding link management
-    if (links > 0) {
+    if (links.length > 0) {
       for (let i = 0; i < links.length; i++) {
         const a = links[i];
         a.addEventListener("click", (e) => {
@@ -63,15 +112,43 @@ export default {
       }
     }
   },
+  watch: {
+    // tracks the previous file index to avoid scrolling to top if the same file was re-redered (after text-size or theme change for instance)
+    currentFileIndex(newVal, prevVal) {
+      if (prevVal !== newVal) {
+        this.allowScrollTop = true;
+      }
+    },
+  },
+  // to be implemeted later
+  // mounted() {
+  //   const renderer = this.$refs.renderer;
+  //   renderer.addEventListener("mouseup", () => {
+  //     const range = window.getSelection().getRangeAt(0);
+  //     const selection = range.toString().trim();
+  //     const position = range.getBoundingClientRect();
+  //     if (selection && selection.length > 0) {
+  //       console.log(selection, position);
+  //     }
+  //   });
+  // },
 };
 </script>
 
 <style>
-div#renderer a {
-  color: rgb(31, 65, 160);
+div.light a {
+  color: rgb(71, 107, 207);
   text-decoration: none;
 }
-div#renderer a:hover {
+div.light a:hover {
+  text-decoration: underline;
+}
+/* dark */
+div.dark a {
+  color: rgb(171, 194, 238);
+  text-decoration: none;
+}
+div.dark a:hover {
   text-decoration: underline;
 }
 /* width */
@@ -85,7 +162,7 @@ div#renderer a:hover {
 }
 /* - dark - */
 div.dark::-webkit-scrollbar-track {
-  background: rgba(230, 230, 230, 0.747);
+  background: rgba(78, 86, 102, 0.712);
 }
 /* ----- Track hover ----- */
 ::-webkit-scrollbar-track:hover {
@@ -93,7 +170,7 @@ div.dark::-webkit-scrollbar-track {
 }
 /* - dark - */
 div.dark::-webkit-scrollbar-track:hover {
-  background: rgb(230, 230, 230);
+  background: rgba(87, 99, 122, 0.884);
 }
 
 /* ----- Handle ----- */
@@ -104,7 +181,7 @@ div.dark::-webkit-scrollbar-track:hover {
 }
 /* - dark - */
 div.dark::-webkit-scrollbar-thumb {
-  background: rgba(40, 50, 70, 0.849);
+  background: rgba(255, 255, 255, 0.623);
 }
 
 /*----- Handle hover ----- */
@@ -112,7 +189,7 @@ div.dark::-webkit-scrollbar-thumb {
   background: rgb(81, 94, 119);
 }
 
-div#renderer > div p {
+/* div#renderer > div p {
   font-size: 1.5rem;
-}
+} */
 </style>

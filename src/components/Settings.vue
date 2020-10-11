@@ -26,27 +26,38 @@
       <div class="tw-w-full tw-h-full tw-overflow-y-auto">
         <!-- TOC ITEMS -->
         <ul class="tw-h-full">
-          <li
-            class="tw-h-16 tw-w-full tw-flex tw-pl-4 tw-items-center hover:tw-bg-gray-800 hover:tw-bg-opacity-75 tw-font-bold tw-text-xl tw-border-b-2 tw-border-gray-800 tw-border-opacity-25"
-          >
-            Theme :
+          <SettingsItem>
+            <template v-slot:settingName>Theme</template>
             <button
-              class="tw-h-12 tw-w-12 tw-flex tw-justify-center tw-items-center tw-mx-5 hover:tw-text-gray-200"
+              class="tw-h-10 tw-w-10 tw-flex tw-justify-center tw-items-center tw-mx-5 hover:tw-text-gray-200"
               :class="{ 'active-theme': theme.name === 'light' }"
               title="Light theme"
               @click="setLightTheme"
             >
-              <LightThemeIcon :size="35" title="Light theme" />
+              <LightThemeIcon :size="31" title="Light theme" />
             </button>
             <button
-              class="tw-h-12 tw-w-12 tw-flex tw-justify-center tw-items-center hover:tw-text-blue-200"
+              class="tw-h-10 tw-w-10 tw-flex tw-justify-center tw-items-center hover:tw-text-blue-200"
               :class="{ 'active-theme': theme.name === 'dark' }"
               title="Dark theme"
               @click="setDarkTheme"
             >
-              <DarkThemeIcon :size="35" title="Dark theme" />
+              <DarkThemeIcon :size="31" title="Dark theme" />
             </button>
-          </li>
+          </SettingsItem>
+          <SettingsItem>
+            <template v-slot:settingName>Text Size</template>
+            A-
+            <input
+              type="range"
+              min="1"
+              max="5"
+              stlye="background: red"
+              @input="setSize"
+              value="3"
+            />
+            A+
+          </SettingsItem>
         </ul>
       </div>
     </div>
@@ -58,6 +69,8 @@ import Close from "icons/Close";
 import vco from "v-click-outside";
 import Brightness5 from "icons/Brightness5";
 import Brightness4 from "icons/Brightness4";
+
+import SettingsItem from "./SettingsItem";
 // import CogOutline from "icons/CogOutline";
 
 import { mapGetters, mapMutations } from "vuex";
@@ -67,6 +80,7 @@ export default {
     Close,
     LightThemeIcon: Brightness5,
     DarkThemeIcon: Brightness4,
+    SettingsItem,
     // CogOutline
   },
   computed: {
@@ -82,12 +96,24 @@ export default {
       closeSettingsPanel: "CLOSE_SETTINGS",
       setDarkTheme: "SET_DARK_THEME",
       setLightTheme: "SET_LIGHT_THEME",
+      setTextSize: "SET_TEXT_SIZE",
     }),
     closeSettings(e) {
       // this will prevent the table of contents from closing right after being opened from the header button by matching the title text with the clicked element
       if (e.target.textContent != "Open settings") {
         this.closeSettingsPanel();
       }
+    },
+    setSize(e) {
+      let size = parseInt(e.target.value);
+      if (!Number.isInteger(size)) {
+        size = 3;
+      } else if (size >= 5) {
+        size = 5;
+      } else if (size <= 0) {
+        size = 0;
+      }
+      this.setTextSize(size);
     },
   },
   directives: {
