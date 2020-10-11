@@ -5,7 +5,7 @@
         class="tw-h-16 tw-w-full tw-flex tw-pl-4 tw-items-center hover:tw-bg-gray-700 tw-font-bold tw-border-b tw-border-gray-600 tw-border-opacity-25"
         :href="nav.content.attr_src"
         :class="appendClass"
-        @click="goToPage(nav.content.attr_src)"
+        @click.prevent="goToPage(nav.content.attr_src)"
         >{{ decodeEntities(nav.navLabel.text) }}</a
       >
       <template v-if="nav.hasOwnProperty('navPoint')">
