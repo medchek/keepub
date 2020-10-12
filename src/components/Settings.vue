@@ -52,7 +52,7 @@
               type="range"
               min="1"
               max="5"
-              stlye="background: red"
+              class="tw-w-1/2 md:tw-w-auto"
               @input="setSize"
               value="3"
             />

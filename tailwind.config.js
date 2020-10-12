@@ -3,7 +3,9 @@
 module.exports = {
   // important: true,
   theme: {},
-  variants: {},
+  variants: {
+    backgroundColor: ["responsive", "hover", "focus", "active"],
+  },
   plugins: [],
   future: {
     removeDeprecatedGapUtilities: true,

@@ -1,7 +1,7 @@
 <template>
   <div
     id="renderer"
-    class="tw-w-auto tw-h-full tw-flex tw-flex-col tw-flex-grow tw-pt-5 tw-px-12 tw-pb-10 tw-overflow-y-auto"
+    class="tw-w-auto tw-h-full tw-flex tw-flex-col tw-flex-grow tw-pt-5 tw-px-2 md:tw-px-12 tw-pb-10 tw-overflow-y-auto tw-overflow-x-hidden"
     :class="[theme.text, theme.name, textSizeClass.default, textSizeClass.lg]"
     ref="renderer"
     v-html="src"
@@ -38,23 +38,23 @@ export default {
       let lgTextClass = "lg:tw-text-";
       switch (this.textSize) {
         case 1:
-          textClass += "sm";
+          textClass += "xs";
           lgTextClass += "base";
           break;
         case 2:
-          textClass += "base";
+          textClass += "sm";
           lgTextClass += "xl";
           break;
         case 3:
-          textClass += "xl";
+          textClass += "base";
           lgTextClass += "2xl";
           break;
         case 4:
-          textClass += "2xl";
+          textClass += "xl";
           lgTextClass += "3xl";
           break;
         case 5:
-          textClass += "3xl";
+          textClass += "2xl";
           lgTextClass += "4xl";
 
           break;
@@ -79,7 +79,6 @@ export default {
   },
   mixins: [navigationMixins],
   updated() {
-    console.log("Renderer updated!");
     const rendererEl = this.$refs.renderer;
     // reset scroll position
 

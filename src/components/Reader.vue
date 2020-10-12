@@ -11,7 +11,7 @@
     >
       <!-- PREVIOUS BUTTOn -->
       <button
-        class="tw-flex tw-justify-center tw-items-center tw-bg-gray-200 tw-bg-opacity-50 hover:tw-bg-opacity-75 tw-w-6 tw-px-4 tw-h-full tw-self-center"
+        class="tw-flex tw-justify-center tw-items-center tw-bg-gray-200 tw-bg-opacity-50 hover:tw-bg-opacity-75 active:tw-bg-gray-300 tw-w-3 tw-px-3 lg:tw-px-4 tw-h-full tw-self-center"
         :disabled="currentFileIndex === -1"
         :class="[{ disabled: currentFileIndex === -1 }, theme.readerArrows]"
         @click="read(-1)"
@@ -32,7 +32,7 @@
           },
           theme.readerArrows,
         ]"
-        class="tw-flex tw-justify-center tw-items-center tw-bg-gray-200 tw-bg-opacity-50 hover:tw-bg-opacity-75 tw-w-6 tw-px-4 tw-h-full tw-self-center"
+        class="tw-flex tw-justify-center tw-items-center tw-bg-gray-200 tw-bg-opacity-50 hover:tw-bg-opacity-75 active:tw-bg-gray-300 tw-w-3 tw-px-3 lg:tw-px-4 tw-h-full tw-self-center"
         @click="read(1)"
         title="next page"
       >

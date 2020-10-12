@@ -3,8 +3,12 @@
     class="tw-text-center tw-w-auto tw-h-full tw-flex tw-flex-col tw-justify-center tw-pb-40"
     :class="theme.text"
   >
-    <div id="book-title" class="tw-text-5xl tw-italic">{{ title }}</div>
-    <div id="book-author" class="tw-text-2xl tw-italic">by {{ author }}</div>
+    <div id="book-title" class="tw-text-3xl lg:tw-text-5xl tw-italic">
+      {{ title }}
+    </div>
+    <div id="book-author" class="tw-text-lg lg:tw-text-2xl tw-italic">
+      by {{ author }}
+    </div>
   </div>
 </template>
 
