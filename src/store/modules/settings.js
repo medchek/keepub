@@ -15,11 +15,13 @@ export default {
     show: false,
     theme: defaultTheme,
     textSize: 3,
+    dictionarySource: "merriam",
   },
   getters: {
     getTheme: (state) => state.theme,
     getIsShowSettings: (state) => state.show,
     getTextSize: (state) => state.textSize,
+    getDictionarySource: (state) => state.dictionarySource,
   },
   mutations: {
     SET_DARK_THEME(state) {
@@ -50,6 +52,10 @@ export default {
     },
     SET_TEXT_SIZE(state, newTextSize) {
       state.textSize = newTextSize;
+    },
+    SET_DICTIONARY(state, dictionary) {
+      if (state.dictionarySource === dictionary) return;
+      state.dictionarySource = dictionary;
     },
   },
 };

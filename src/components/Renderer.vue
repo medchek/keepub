@@ -1,22 +1,33 @@
 <template>
-  <div
-    id="renderer"
-    class="tw-w-auto tw-h-full tw-flex tw-flex-col tw-flex-grow tw-pt-5 tw-px-2 md:tw-px-12 tw-pb-10 tw-overflow-y-auto tw-overflow-x-hidden"
-    :class="[theme.text, theme.name, textSizeClass.default, textSizeClass.lg]"
-    ref="renderer"
-    v-html="src"
-  ></div>
+  <div class="tw-w-auto tw-h-full tw-flex tw-flex-grow">
+    <div
+      id="renderer"
+      class="tw-w-auto tw-h-full tw-flex tw-flex-col tw-flex-grow tw-pt-5 tw-px-2 md:tw-px-12 tw-pb-10 tw-overflow-y-auto tw-overflow-x-hidden"
+      :class="[theme.text, theme.name, textSizeClass.default, textSizeClass.lg]"
+      ref="renderer"
+      v-html="src"
+    ></div>
+    <SelectionMenu
+      v-click-outside="removeSelection"
+      :selection="selectionMenuData"
+    />
+  </div>
 </template>
 
 <script>
-import { mapGetters, mapMutations, mapActions } from "vuex";
+import { mapGetters, mapMutations } from "vuex";
 import { navigationMixins } from "../mixins";
+import SelectionMenu from "./SelectionMenu";
+
+import vco from "v-click-outside";
+
 export default {
   data() {
     return {
       previousScrollPosition: 0,
       nextScrollPosition: 0,
       allowScrollTop: false,
+      selectionMenuData: undefined,
     };
   },
   props: {
@@ -75,7 +86,52 @@ export default {
       setCurrentFileIndex: "SET_CURRENT_FILE_INDEX",
       openDefinitionPanel: "OPEN_DEFINITION",
     }),
-    ...mapActions(["getDefinition"]),
+    log() {
+      console.log("CLICKED OUTSIDE");
+    },
+    // checks if the new selection is different from the previous one by comparing their x and y positions the position
+    isDifferentSelection(newSelPosition) {
+      if (!this.selectionMenuData) return true;
+      const oldSel = this.selectionMenuData.position;
+      const { x, y, width } = newSelPosition;
+      return oldSel.x !== x || oldSel.y !== y || oldSel.width !== width;
+    },
+    // checks whether the selection position is out of the renderer frame
+    isOutOfRenderer(selectionPosition) {
+      const renderer = this.$refs.renderer.getBoundingClientRect();
+      const { top, bottom } = selectionPosition;
+      return renderer.top > bottom || renderer.bottom < top;
+    },
+    setSelection() {
+      const globalSelection = window.getSelection();
+      if (!globalSelection.toString()) this.removeSelection();
+
+      const range = globalSelection.getRangeAt(0);
+      const selection = range.toString().trim();
+      const position = range.getBoundingClientRect();
+      const ignored = /^[,.()[\]?!“”"_'-]+$/gi;
+
+      if (
+        selection &&
+        selection.length > 0 &&
+        !ignored.test(selection) &&
+        this.isDifferentSelection(position) &&
+        !this.isOutOfRenderer(position)
+      ) {
+        this.selectionMenuData = {
+          selection,
+          position,
+        };
+      } else {
+        this.removeSelection();
+      }
+    },
+    removeSelection() {
+      this.selectionMenuData = undefined;
+    },
+  },
+  directives: {
+    clickOutside: vco.directive,
   },
   mixins: [navigationMixins],
   updated() {
@@ -119,18 +175,25 @@ export default {
       }
     },
   },
-  // to be implemeted later
-  // mounted() {
-  //   const renderer = this.$refs.renderer;
-  //   renderer.addEventListener("mouseup", () => {
-  //     const range = window.getSelection().getRangeAt(0);
-  //     const selection = range.toString().trim();
-  //     const position = range.getBoundingClientRect();
-  //     if (selection && selection.length > 0) {
-  //       console.log(selection, position);
-  //     }
-  //   });
-  // },
+  components: {
+    SelectionMenu,
+  },
+  mounted() {
+    const renderer = this.$refs.renderer;
+
+    renderer.addEventListener("mouseup", () => {
+      this.setSelection();
+    });
+
+    let scrollTimeout;
+    renderer.addEventListener("scroll", () => {
+      clearTimeout(scrollTimeout);
+      scrollTimeout = setTimeout(() => {
+        this.setSelection();
+        console.log("SCROLLED !");
+      }, 150);
+    });
+  },
 };
 </script>
 

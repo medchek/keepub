@@ -58,6 +58,18 @@
             />
             A+
           </SettingsItem>
+          <SettingsItem>
+            <template v-slot:settingName>Dictionary</template>
+            <select
+              class="tw-text-gray-900 tw-h-8 tw-w-11/12 tw-font-bold tw-rounded-sm"
+              @input="setDictionary($event.target.value)"
+            >
+              <option value="merriam">Merriam Webster</option>
+              <option value="google">Google Translate</option>
+              <option value="oxford">Oxford Dictionary</option>
+              <option value="cambridge">Cambridge Dictionary</option>
+            </select>
+          </SettingsItem>
         </ul>
       </div>
     </div>
@@ -88,6 +100,7 @@ export default {
       toc: "getToc",
       showSettings: "getIsShowSettings",
       theme: "getTheme",
+      dictionary: "getDictionarySource",
     }),
   },
 
@@ -97,6 +110,7 @@ export default {
       setDarkTheme: "SET_DARK_THEME",
       setLightTheme: "SET_LIGHT_THEME",
       setTextSize: "SET_TEXT_SIZE",
+      setDictionary: "SET_DICTIONARY",
     }),
     closeSettings(e) {
       // this will prevent the table of contents from closing right after being opened from the header button by matching the title text with the clicked element
