@@ -8,7 +8,7 @@
       v-html="src"
     ></div>
     <SelectionMenu
-      v-click-outside="removeSelection"
+      v-click-outside="clickOutsideRemoveSelection"
       :selection="selectionMenuData"
     />
   </div>
@@ -86,9 +86,6 @@ export default {
       setCurrentFileIndex: "SET_CURRENT_FILE_INDEX",
       openDefinitionPanel: "OPEN_DEFINITION",
     }),
-    log() {
-      console.log("CLICKED OUTSIDE");
-    },
     // checks if the new selection is different from the previous one by comparing their x and y positions the position
     isDifferentSelection(newSelPosition) {
       if (!this.selectionMenuData) return true;
@@ -104,7 +101,6 @@ export default {
     },
     setSelection() {
       const globalSelection = window.getSelection();
-      if (!globalSelection.toString()) this.removeSelection();
 
       const range = globalSelection.getRangeAt(0);
       const selection = range.toString().trim();
@@ -123,6 +119,11 @@ export default {
           position,
         };
       } else {
+        this.removeSelection();
+      }
+    },
+    clickOutsideRemoveSelection(e) {
+      if (!this.$refs.renderer.contains(e.target)) {
         this.removeSelection();
       }
     },
@@ -190,7 +191,6 @@ export default {
       clearTimeout(scrollTimeout);
       scrollTimeout = setTimeout(() => {
         this.setSelection();
-        console.log("SCROLLED !");
       }, 150);
     });
   },
