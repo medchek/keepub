@@ -40,8 +40,6 @@
       </button>
     </div>
 
-    <DefinitionPanel />
-
     <TableOfContents v-show="sideNav.show" />
     <Settings v-show="isShowSettings" />
   </div>
@@ -58,7 +56,6 @@ import TableOfContents from "./TableOfContents";
 import BookMetadata from "./BookMetadata";
 import Renderer from "./Renderer";
 import Loader from "./Loader";
-import DefinitionPanel from "./DefinitionPanel";
 import Settings from "./Settings";
 // vuex
 import { mapGetters, mapMutations } from "vuex";
@@ -158,9 +155,6 @@ export default {
       // regex for extracting attribute values that contain a path/url to a file
       // exluding xpgt files
       const regex = /="[\w./@-]*\/?([\w-]+\.(?!(xpgt|x?html?))[a-z]{1,5})"/gim;
-      // const regex = /="[\w./-]*\/?([\w-]+\.(?!(xpgt|x?html?))[a-z]{1,5})"/gim;
-      // const regex = /(?!https?)[^"]*\/?([\w-]+\.(?!(xpgt|x?html?))[a-z]{1,5})"/gim;
-      // const regex = /[^:"]*\/?([\w-]+\.(?!(xpgt|x?html?))[a-z]{1,5})"/gim;
       // fetch for any matches with the html string
       const match = htmlString.match(regex);
       if (!match) {
@@ -448,10 +442,8 @@ export default {
     ChevronRight,
     Renderer,
     Loader,
-    DefinitionPanel,
     Settings,
   },
-  // TODO (maybe) : should be handled in a prior stage, when assets file path is searched
   // handle asset file objects loading on component creation
   created() {
     // console.clear();
