@@ -65,9 +65,20 @@ export default {
         this.closeSideNav();
       }
     },
+    handleEscKeypress(e) {
+      if (e.keyCode === 27) {
+        this.closeSideNav();
+      }
+    },
   },
   directives: {
     clickOutside: vco.directive,
+  },
+  created() {
+    window.addEventListener("keydown", this.handleEscKeypress);
+  },
+  destroyed() {
+    window.removeEventListener("keydown", this.handleEscKeypress);
   },
 };
 </script>

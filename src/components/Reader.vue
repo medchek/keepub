@@ -412,6 +412,11 @@ export default {
       const filePathRegex = new RegExp(`${escapedPathForRegex}$`, "i");
       return filePathRegex;
     },
+    handleKeydown(e) {
+      if (e.keyCode === 39) this.read(1); // right arrow key
+      if (e.keyCode === 37) this.read(-1); // left arrow key
+      return;
+    },
   },
   watch: {
     // watch for state chage, and render the corresponding epub page.
@@ -483,6 +488,9 @@ export default {
         console.log("something went wrong", err);
         throw new Error(`Could not load epub asset files ${err}`);
       });
+
+    // accessibility
+    window.addEventListener("keydown", this.handleKeydown);
   },
 };
 </script>

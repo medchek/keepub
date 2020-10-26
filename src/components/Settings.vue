@@ -129,9 +129,20 @@ export default {
       }
       this.setTextSize(size);
     },
+    handleEscKeypress(e) {
+      if (e.keyCode === 27) {
+        this.closeSettingsPanel();
+      }
+    },
   },
   directives: {
     clickOutside: vco.directive,
+  },
+  created() {
+    window.addEventListener("keydown", this.handleEscKeypress);
+  },
+  destroyed() {
+    window.removeEventListener("keydown", this.handleEscKeypress);
   },
 };
 </script>
