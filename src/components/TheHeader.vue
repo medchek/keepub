@@ -1,6 +1,6 @@
 <template>
   <div
-    class="tw-w-full tw-h-auto tw-text-center sm:tw-text-5xl tw-text-4xl tw-text tw-font-bold tw-flex tw-items-center tw-px-3 tw-shadow-xs"
+    class="tw-w-full tw-h-12 lg:tw-h-20 tw-text-center tw-text-2xl lg:tw-text-5xl sm:tw-text-4xl tw-text tw-font-bold tw-flex tw-items-center tw-px-3 tw-shadow-xs"
     :class="[
       opf === null ? 'tw-justify-center' : 'tw-justify-between',
       theme.headerBg,
@@ -22,9 +22,9 @@
       for="select-epub"
       class="tw-cursor-pointer hover:tw-opacity-75 tw-mx-auto"
       title="Open a new epub"
-      >Reader</label
+      >Keepub</label
     >
-    <span v-else>Reader</span>
+    <span v-else>Keepub</span>
     <!-- SETTINGS ICON -->
     <CogOutline
       v-if="opf"
