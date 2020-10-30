@@ -1,7 +1,6 @@
 export default {
   state: {
     component: "Landing", // Landing page by default
-    // component: "Reader", // For dev
     error: {
       show: false,
       message: null,
@@ -9,9 +8,6 @@ export default {
     },
     tocSideNav: {
       show: false, // dev false
-    },
-    definitionPanel: {
-      show: false,
     },
     epub: {
       currentFileIndex: -1, // -1 will not display any of the epub pages, but a metadata component instead.
@@ -21,7 +17,6 @@ export default {
     getError: (state) => state.error,
     getComponent: (state) => state.component,
     getSideNav: (state) => state.tocSideNav,
-    getDefinitionPanel: (state) => state.definitionPanel,
     getCurrentFileIndex: (state) => state.epub.currentFileIndex,
   },
   mutations: {
@@ -58,15 +53,6 @@ export default {
       if (state.tocSideNav.show === true) return;
 
       state.tocSideNav.show = true;
-    },
-    // -- DEFINITION PANEL
-    CLOSE_DEFINITION(state) {
-      if (!state.definitionPanel.show) return;
-      state.definitionPanel.show = false;
-    },
-    OPEN_DEFINITION(state) {
-      if (state.definitionPanel.show === true) return;
-      state.definitionPanel.show = true;
     },
     // -- EPUB NAVIGATION
 
