@@ -15,6 +15,7 @@ module.exports = {
       "6xl": ["4rem", { lineHeight: "1" }],
     },
   },
+  plugins: [require("tailwindcss"), require("autoprefixer")],
   variants: {
     backgroundColor: ["responsive", "hover", "focus", "active"],
   },
@@ -24,6 +25,23 @@ module.exports = {
     defaultLineHeights: true,
     standardFontWeights: true,
   },
-  purge: ["./src/**/*.html", "./src/**/*.vue", "./src/**/*.jsx"],
+  purge: {
+    content: ["./src/**/*.html", "./src/**/*.vue", "./src/**/*.jsx"],
+    options: {
+      whitelist: [
+        "tw-bg-gray-800",
+        "tw-bg-white",
+        "tw-text-gray-800",
+        "tw-text-gray-600",
+        "tw-text-gray-200",
+        "tw-text-xs",
+        "tw-text-xl",
+        "tw-text-sm",
+        "lg:tw-text-base",
+        "lg:tw-text-3xl",
+        "lg:tw-text-xl",
+      ],
+    },
+  },
   prefix: "tw-",
 };

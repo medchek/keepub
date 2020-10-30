@@ -1,6 +1,7 @@
 const path = require("path");
 // https://cli.vuejs.org/guide/webpack.html#simple-configuration
 module.exports = {
+  publicPath: "",
   configureWebpack: {
     resolve: {
       alias: {
