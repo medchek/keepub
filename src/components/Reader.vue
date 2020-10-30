@@ -6,7 +6,7 @@
     <Loader v-if="!isLoaded" :size="4" />
     <div
       v-else
-      class="tw-h-full tw-w-11/12 tw-flex tw-flex-row tw-justify-between tw-overflow-hidden tw-shadow-lg tw-border moved"
+      class="tw-h-full tw-w-full md:tw-w-11/12 tw-flex tw-flex-row tw-justify-between tw-overflow-hidden tw-shadow-lg tw-border moved"
       :class="[theme.readerBorder, theme.readerBg]"
     >
       <!-- PREVIOUS BUTTOn -->
@@ -46,17 +46,14 @@
 </template>
 
 <script>
-import JSZip from "jszip";
+import { loadAsync } from "jszip";
 // import csso from "csso";
 // mdi icon components
 import ChevronLeft from "icons/ChevronLeft";
 import ChevronRight from "icons/ChevronRight";
 // local components
-import TableOfContents from "./TableOfContents";
 import BookMetadata from "./BookMetadata";
-import Renderer from "./Renderer";
 import Loader from "./Loader";
-import Settings from "./Settings";
 // vuex
 import { mapGetters, mapMutations } from "vuex";
 export default {
@@ -101,7 +98,7 @@ export default {
       return;
     },
     renderEpub() {
-      JSZip.loadAsync(this.epub)
+      loadAsync(this.epub)
         // resolve
         .then((epubObj) => {
           // extract asset files
@@ -128,6 +125,7 @@ export default {
               // async to string sucess
               (html) => {
                 // parse the html string
+                this.render = "<div>Loading...</div>";
                 const render = this.htmlRegexParse(html);
                 this.render = render;
               },
@@ -310,7 +308,7 @@ export default {
     // remove any css rules that correspond to the rules sets
     removeConflictingCss(cssText) {
       const rules = [
-        /(body|svg)[^\n\r\t]*[ \n\r\t]*{[ \w"',%()/:;.\n\r\t-]*}/gim,
+        /(body|svg|a)[^\n\r\t]*[ \n\r\t]*{[ \w"',%()/:;.\n\r\t-]*}/gim,
         /(font-size|color)\s?:[a-zA-Z0-9.%#(), -]+;?/gim,
       ];
       for (let i = 0; i < rules.length; i++) {
@@ -441,18 +439,18 @@ export default {
     };
   },
   components: {
-    TableOfContents,
+    TableOfContents: () => import("./TableOfContents"),
     BookMetadata,
     ChevronLeft,
     ChevronRight,
-    Renderer,
+    Renderer: () => import("./Renderer"),
     Loader,
-    Settings,
+    Settings: () => import("./Settings"),
   },
   // handle asset file objects loading on component creation
   created() {
     // console.clear();
-    JSZip.loadAsync(this.epub)
+    loadAsync(this.epub)
       .then((epubObj) => {
         const assetsPromises = [];
         for (let i = 0; i < this.assets.length; i++) {

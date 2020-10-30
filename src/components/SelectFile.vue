@@ -11,8 +11,8 @@
 <script>
 import { mapMutations, mapActions } from "vuex";
 
-import JSZip from "jszip";
-import parser from "fast-xml-parser";
+import { loadAsync } from "jszip";
+import { parse } from "fast-xml-parser";
 
 export default {
   methods: {
@@ -47,7 +47,7 @@ export default {
       }
     },
     openEpub(file) {
-      JSZip.loadAsync(file, { createFolders: false })
+      loadAsync(file, { createFolders: false })
         .then((epub) => {
           const opf = epub.file(/^.+\.opf$/);
           const ncx = epub.file(/^.+\.ncx$/);
@@ -121,7 +121,7 @@ export default {
     },
     parseXML(xml) {
       try {
-        const opfJson = parser.parse(xml, {
+        const opfJson = parse(xml, {
           ignoreAttributes: false,
           attributeNamePrefix: "attr_",
         });

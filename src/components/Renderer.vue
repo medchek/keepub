@@ -17,7 +17,6 @@
 <script>
 import { mapGetters, mapMutations } from "vuex";
 import { navigationMixins } from "../mixins";
-import SelectionMenu from "./SelectionMenu";
 
 import vco from "v-click-outside";
 
@@ -177,7 +176,7 @@ export default {
     },
   },
   components: {
-    SelectionMenu,
+    SelectionMenu: () => import("./SelectionMenu"),
   },
   mounted() {
     const renderer = this.$refs.renderer;
