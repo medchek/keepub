@@ -22,7 +22,7 @@
       <!-- METADATA -->
       <BookMetadata v-if="currentFileIndex === -1" />
       <!-- RENDERER -->
-      <Renderer v-else :src="render" />
+      <Renderer v-else :src="render" :body-id="bodyId" />
       <!-- NEXT BUTTON -->
       <button
         :disabled="currentFileIndex === opf.package.spine.itemref.length - 1"
@@ -62,6 +62,7 @@ export default {
       isLoaded: false,
       render: "",
       renderCss: "",
+      bodyId: "",
       // stores all the asset files. This state is populated upon component creation (see created() lifecycle)
       assetFiles: [],
       // store the currently used blob urls
@@ -73,7 +74,6 @@ export default {
     ...mapGetters({
       sideNav: "getSideNav",
       opf: "getOpf",
-      ncx: "getNcx",
       epub: "getEpub",
       assets: "getAssets",
       currentFileIndex: "getCurrentFileIndex", // current file index following the opf spine, where -1 will display the Metadata component,
@@ -284,6 +284,8 @@ export default {
         htmlString,
         "application/xhtml+xml"
       );
+      const bodyId = html.body.getAttribute("id");
+      this.bodyId = bodyId ? bodyId : "renderer";
       return html.body.innerHTML;
     },
     // extract paths to fonts from within the css
@@ -432,10 +434,10 @@ export default {
   },
   metaInfo() {
     const css = this.renderCss;
-    const ncx = this.ncx;
+    const title = this.opf.package.metadata["dc:title"];
     return {
       style: [css.length > 0 ? { type: "text/css", cssText: css } : ""],
-      title: `${ncx.ncx.docTitle.text} - Reader`,
+      title: `${typeof title === "object" ? title["#text"] : title} - Keepub`,
     };
   },
   components: {

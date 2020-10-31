@@ -10,6 +10,7 @@ export default {
       show: false, // dev false
     },
     epub: {
+      linkId: undefined,
       currentFileIndex: -1, // -1 will not display any of the epub pages, but a metadata component instead.
     },
   },
@@ -18,6 +19,7 @@ export default {
     getComponent: (state) => state.component,
     getSideNav: (state) => state.tocSideNav,
     getCurrentFileIndex: (state) => state.epub.currentFileIndex,
+    getLinkId: (state) => state.epub.linkId,
   },
   mutations: {
     // -- error display
@@ -59,6 +61,9 @@ export default {
     // * sets the current file index to be rendered
     SET_CURRENT_FILE_INDEX(state, fileIndex) {
       state.epub.currentFileIndex = fileIndex;
+    },
+    SET_LINK_ID(state, id) {
+      state.epub.linkId = id;
     },
   },
   actions: {

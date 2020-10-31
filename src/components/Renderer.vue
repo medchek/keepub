@@ -1,7 +1,7 @@
 <template>
   <div class="tw-w-auto tw-h-full tw-flex tw-flex-grow">
     <div
-      id="renderer"
+      :id="bodyId"
       class="tw-w-auto tw-h-full tw-flex tw-flex-col tw-flex-grow tw-pt-5 tw-px-2 md:tw-px-12 tw-pb-10 tw-overflow-y-auto tw-overflow-x-hidden"
       :class="[theme.text, theme.name, textSizeClass.default, textSizeClass.lg]"
       ref="renderer"
@@ -15,7 +15,7 @@
 </template>
 
 <script>
-import { mapGetters, mapMutations } from "vuex";
+import { mapGetters } from "vuex";
 import { navigationMixins } from "../mixins";
 
 import vco from "v-click-outside";
@@ -35,13 +35,17 @@ export default {
       required: true,
       default: "<p>ERROR, NO RENDER CONTENT HAS BEEN PROVIDED</p>",
     },
+    bodyId: {
+      type: String,
+      required: true,
+    },
   },
   computed: {
     ...mapGetters({
-      opf: "getOpf",
       theme: "getTheme",
       textSize: "getTextSize",
       currentFileIndex: "getCurrentFileIndex",
+      linkId: "getLinkId",
     }),
     textSizeClass() {
       let textClass = "tw-text-";
@@ -81,10 +85,6 @@ export default {
     },
   },
   methods: {
-    ...mapMutations({
-      setCurrentFileIndex: "SET_CURRENT_FILE_INDEX",
-      openDefinitionPanel: "OPEN_DEFINITION",
-    }),
     // checks if the new selection is different from the previous one by comparing their x and y positions the position
     isDifferentSelection(newSelPosition) {
       if (!this.selectionMenuData) return true;
@@ -129,6 +129,12 @@ export default {
     removeSelection() {
       this.selectionMenuData = undefined;
     },
+    scrollToId() {
+      const scrollToId = document.getElementById(this.linkId);
+      if (scrollToId !== null) {
+        scrollToId.scrollIntoView();
+      }
+    },
   },
   directives: {
     clickOutside: vco.directive,
@@ -141,8 +147,12 @@ export default {
     // only scroll back to top if the there's a change of file content
     if (this.allowScrollTop) {
       rendererEl.scrollTop = 0;
-      // set if back to false (default) until future file index change (see watcher)
+      // set if back to false (default) until future file index change (see currentFileIndex watcher)
       this.allowScrollTop = false;
+    }
+    // scroll to target id if it's set
+    if (this.linkId) {
+      this.scrollToId();
     }
     const links = rendererEl.querySelectorAll("a[href]");
     // adding link management
@@ -155,10 +165,7 @@ export default {
           // only then
           if (isNavigationLink) {
             e.preventDefault();
-            // file name with possible #id at the end
-            const completeFileName = a.href.split("/").pop();
-            // file name without the #id
-            const [fileName /*, hashTag*/] = completeFileName.split("#");
+            const fileName = a.href.split("/").pop();
             // getting the file index by file name to navigate to it
             this.goToPage(fileName);
           }
@@ -172,6 +179,14 @@ export default {
     currentFileIndex(newVal, prevVal) {
       if (prevVal !== newVal) {
         this.allowScrollTop = true;
+      }
+    },
+    linkId(newVal, prevVal) {
+      if (prevVal !== newVal) {
+        this.scrollToId();
+      }
+      if (prevVal !== undefined && newVal === undefined) {
+        this.$refs.renderer.scrollTop = 0;
       }
     },
   },

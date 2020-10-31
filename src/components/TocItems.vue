@@ -37,7 +37,6 @@
 
 <script>
 import { decode } from "entities";
-import { mapGetters, mapMutations } from "vuex";
 import { navigationMixins } from "../mixins";
 
 export default {
@@ -53,13 +52,8 @@ export default {
       default: "",
     },
   },
-  computed: mapGetters({
-    opf: "getOpf",
-    currentFileIndex: "getCurrentFileIndex",
-  }),
   mixins: [navigationMixins],
   methods: {
-    ...mapMutations({ setCurrentFileIndex: "SET_CURRENT_FILE_INDEX" }),
     decodeEntities(str) {
       return decode(str);
     },
