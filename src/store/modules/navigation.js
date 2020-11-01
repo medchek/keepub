@@ -1,7 +1,6 @@
 export default {
   state: {
     component: "Landing", // Landing page by default
-    // component: "Reader", // For dev
     error: {
       show: false,
       message: null,
@@ -10,10 +9,8 @@ export default {
     tocSideNav: {
       show: false, // dev false
     },
-    definitionPanel: {
-      show: false,
-    },
     epub: {
+      linkId: undefined,
       currentFileIndex: -1, // -1 will not display any of the epub pages, but a metadata component instead.
     },
   },
@@ -21,8 +18,8 @@ export default {
     getError: (state) => state.error,
     getComponent: (state) => state.component,
     getSideNav: (state) => state.tocSideNav,
-    getDefinitionPanel: (state) => state.definitionPanel,
     getCurrentFileIndex: (state) => state.epub.currentFileIndex,
+    getLinkId: (state) => state.epub.linkId,
   },
   mutations: {
     // -- error display
@@ -59,20 +56,14 @@ export default {
 
       state.tocSideNav.show = true;
     },
-    // -- DEFINITION PANEL
-    CLOSE_DEFINITION(state) {
-      if (!state.definitionPanel.show) return;
-      state.definitionPanel.show = false;
-    },
-    OPEN_DEFINITION(state) {
-      if (state.definitionPanel.show === true) return;
-      state.definitionPanel.show = true;
-    },
     // -- EPUB NAVIGATION
 
     // * sets the current file index to be rendered
     SET_CURRENT_FILE_INDEX(state, fileIndex) {
       state.epub.currentFileIndex = fileIndex;
+    },
+    SET_LINK_ID(state, id) {
+      state.epub.linkId = id;
     },
   },
   actions: {
